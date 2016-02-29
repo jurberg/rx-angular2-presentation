@@ -54,6 +54,96 @@
         </section>
 
         <section>
+            <h3>What is functional programming?</h3>
+            <br/>
+            <p>When functions, not objects or procedures, are used as the fundamental building blocks of a program.<a href="http://c2.com/cgi/wiki?FunctionalProgramming">*</a></p>
+        </section>
+
+        <section>
+            <h3>First Class Functions</h3>
+            <br/>
+            <ul>
+                <li>Can be stored in variables</li>
+                <li>Can be passed as arguments to functions</li>
+                <li>Can be created within functions</li>
+                <li>Can be returned from functions.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>High Order Functions</h3>
+            <br/>
+            <p>A function that takes a function as an argument, or returns a function as a result</p>
+        </section>
+
+        <section>
+            <pre><code class="javascript">var add = (a, b) => a + b;
+var add3 = (a) => add(a, 3);
+
+var wait = (callback) => setTimeout(callback, 1000);
+
+var counter = () => {
+  let count = 0;
+  return () => count++;
+};
+var count = counter();
+count(); // 0
+count(); // 1</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="javascript">const incomplete = filter(where({complete: false}));
+const groupByUser = partition(prop('username'));
+const activeByUser = compose(groupByUser, incomplete);
+
+const results = activeByUser(tasks);</code></pre>
+        </section>
+
+        <section>
+            <h3>Single Assignment</h3>
+            <br/>
+            <p>A variable can only be assigned once and never changed</p>
+        </section>
+
+        <section>
+            <pre><code class="javascript">const cust = Object.freeze({
+  name: 'John Doe',
+  balance: 100
+});
+
+cust.name = 'Jane Doe'; // ERROR!</code></pre>
+        </section>
+
+        <section>
+            <h3>Why would I want to do that?!?</h3>
+        </section>
+
+        <section>
+            <pre><code class="javascript">function updateBalance(amount) {
+  customer.balance = customer.balance + amount;
+  return customer;
+};
+
+function updateBalance(customer, amount) {
+  return Object.assign({}, customer, {
+    balance: customer.balance + amount
+  });
+};</code></pre>
+        </section>
+
+        <section>
+            <h3>Performance</h3>
+            <br/>
+            <p>Angular 2 is faster with immutable objects<br/>(more on that later)</p>
+        </section>
+
+        <section>
+            <h3>What is Reactive Programming?</h3>
+            <br/>
+            <p>A programming paradigm oriented around data flows and the propagation of change</p>
+        </section>
+
+        <section>
             <h2>Questions</h2>
         </section>
 
