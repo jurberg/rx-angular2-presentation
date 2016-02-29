@@ -1,0 +1,29 @@
+.reveal pre {
+  width: 100%;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.25em;
+  max-height: none;
+  padding: 1em;
+}
+
+.reveal .output {
+  border: 1px dashed #DCDCDC;
+  padding: 1em;
+  min-height: 300px;
+}
+
+.reveal section img {
+    border: none;
+    box-shadow: none;
+}
+
+.bp:before {
+    content: url('../img/thumbs-up.png');
+}
+
+.bad:before {
+    content: url('../img/thumbs-down.png');
+}
