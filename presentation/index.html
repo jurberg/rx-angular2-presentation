@@ -73,26 +73,21 @@
         <section>
             <h3>High Order Functions</h3>
             <br/>
-            <p>A function that takes a function as an argument, or returns a function as a result</p>
+            <p>A function that takes a function as an argument or returns a function as a result</p>
         </section>
 
         <section>
-            <pre><code class="javascript">var add = (a, b) => a + b;
-var add3 = (a) => add(a, 3);
+            <pre><code class="javascript">const wait = (callback) => setTimeout(callback, 1000);
 
-var wait = (callback) => setTimeout(callback, 1000);
+const add = function(a, b) { return a + b; };
 
-var counter = () => {
-  let count = 0;
-  return () => count++;
-};
-var count = counter();
-count(); // 0
-count(); // 1</code></pre>
-        </section>
+// currying (a.k.a. partial application)
+const add3 = function(a) { return add(3, a); };
+const add3 = add.bind(null, 3);
+const add3 = curry(add)(3);
 
-        <section>
-            <pre><code class="javascript">const incomplete = filter(where({complete: false}));
+// composable
+const incomplete = filter(where({complete: false}));
 const groupByUser = partition(prop('username'));
 const activeByUser = compose(groupByUser, incomplete);
 
@@ -100,9 +95,12 @@ const results = activeByUser(tasks);</code></pre>
         </section>
 
         <section>
-            <h3>Single Assignment</h3>
+            <h3>Purity</h3>
             <br/>
-            <p>A variable can only be assigned once and never changed</p>
+            <ul>
+                <li>Immutable Data</li>
+                <li>No Side Effects</li>
+            </ul>
         </section>
 
         <section>
@@ -111,11 +109,27 @@ const results = activeByUser(tasks);</code></pre>
   balance: 100
 });
 
-cust.name = 'Jane Doe'; // TypeError</code></pre>
+cust = {name: 'Jane Doe', balance: 100}; // TypeError
+cust.name = 'Jane Doe'; // TypeError
+
+const jane = Object.freeze(Object.assign({}, cust, {
+  name: 'Jane Doe'
+}));</code></pre>
         </section>
 
         <section>
-            <h3>Why would I want to do that?!?</h3>
+            <pre><code class="javascript">const john = Immutable.Map({
+  name: 'John Doe',
+  balance: 100
+});
+
+const jane = john.set('name', 'Jane Doe');</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="clojure">(def cust {:name "John Doe" :balance 100})
+
+(def jane (assoc cust :name "Jane Doe"))</code></pre>
         </section>
 
         <section>
@@ -124,11 +138,50 @@ cust.name = 'Jane Doe'; // TypeError</code></pre>
   return customer;
 };
 
-function updateBalance(customer, amount) {
-  return Object.assign({}, customer, {
-    balance: customer.balance + amount
-  });
+function updateBalance(amount, customer) {
+  return customer.set('balance', customer.balance);
 };</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="java">public class Customer {
+  private final String name;
+  private final BigDecimal balance;
+  public Customer(String name, BigDecimal balance) {
+    this.name = name;
+    this.balance = balance;
+  }
+  public String getName() { return name; }
+  public BigDecimal getBalance() { return balance; }
+  public Customer updateBalance(BigDecimal amount) {
+    return new Customer(name, balance.add(amount));
+  }
+}</code></pre>
+        </section>
+
+        <section>
+            <h3>Other Functional Stuff</h3>
+            <br/>
+            <ul>
+                <li>Monads and Functors</li>
+                <li>Referential Transparency</li>
+                <li>Lazy Evaluation</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Why would I want to do that?!?</h3>
+        </section>
+
+        <section>
+            <h3>Standard Reasons</h3>
+            <br/>
+            <ul>
+                <li>Parallelism</li>
+                <li>Ability to reason about your program</li>
+                <li>Composability</li>
+                <li>Better Modularity</li>
+            </ul>
         </section>
 
         <section>
@@ -139,8 +192,131 @@ function updateBalance(customer, amount) {
 
         <section>
             <h3>What is Reactive Programming?</h3>
+        </section>
+
+        <section>
+            <p>Rx is a library for composing asynchronous and event-based operations using observable collections</p>
+        </section>
+
+        <section>
+            <p>"everything is a stream"</p>
+            <ul>
+                <li>click events</li>
+                <li>user inputs</li>
+                <li>data from a server</li>
+            </ul>
+        </section>
+
+        <section>
+            <p>Streams use the same operators that are used on lists</p>
+        </section>
+
+        <section>
+            <pre><code class="javascript">// Array
+const res = stocks
+  .filter(q => q.symbol === 'FB')
+  .map(q => q.quote);
+
+// Observable
+const res = stocks$
+  .filter(q => q.symbol === 'FB')
+  .map(q => q.quote);</code></pre>
+        </section>
+
+        <section>
+            <h3>Pull vs Push</h3>
             <br/>
-            <p>A programming paradigm oriented around data flows and the propagation of change</p>
+            <table style="border-collapse: collapse; border: 1px solid black;width: 100%">
+                <thead>
+                    <tr>
+                        <td style="border: 1px solid black"></td>
+                        <td style="border: 1px solid black;font-weight: bold;">Single</td>
+                        <td style="border: 1px solid black;font-weight: bold;">Multiple</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid black">Pull/Synchronous</td>
+                        <td style="border: 1px solid black">Object</td>
+                        <td style="border: 1px solid black">Iterables (Array, Map, etc)</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black">Push/Async</td>
+                        <td style="border: 1px solid black">Promise</td>
+                        <td style="border: 1px solid black">Observable</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>Observables</h3>
+            <br/>
+            <ul>
+                <li>Stream of data over time</li>
+                <li>Hot vs Cold</li>
+                <li>Asynchronous</li>
+                <li>Lazy</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Observable Creation</h3>
+            <br/>
+            <pre><code class="javascript">Rx.Observable.create(observer => {
+  observer.onNext(42);
+  observer.onCompleted();
+  return () => console.log('disposed')
+});
+
+Rx.Observable.from([1,2,3,4]);
+
+Rx.Observable.timer(5000, 1000);
+
+Rx.Observable.fromEvent(button, 'click');</code></pre>
+        </section>
+
+        <section>
+            <h3>Subscribing to an Observable</h3>
+            <br/>
+            <pre><code class="javascript">stream$.subscribe(
+  function(value) {},
+  function(error) {},  // optional
+  function() {}); // optional
+
+const model$ = Rx.Observable.timer(1, 1000)
+  .map(i => 'Seconds elapsed ' + i);
+model$.subscribe(text => console.log(text));</code></pre>
+        </section>
+
+        <section>
+            <h3>Hot vs Cold Observables</h3>
+        </section>
+
+        <section>
+            <h3>Cold Observables</h3>
+            <br/>
+            <p>Sequences that are passive and start producing notifications when subscribed to</p>
+            <br/>
+            <img src="img/cold.png">
+        </section>
+
+        <section>
+            <h3>Hot Observables</h3>
+            <br/>
+            <p>Sequences that are active and produce notifications regardless of subscriptions</p>
+            <br/>
+            <img src="img/hot.png">
+        </section>
+
+        <section>
+            <h2>Hot/Cold Demo</h2>
+        </section>
+
+        <section>
+            <h2>Auto Complete Demo</h2>
+            <br/>
+            <a href="http://jsbin.com/fuqesa/edit?js,output">Link</a>
         </section>
 
         <section>
