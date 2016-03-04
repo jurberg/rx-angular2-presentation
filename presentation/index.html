@@ -55,7 +55,9 @@
 
         <section>
             <h3>What is functional programming?</h3>
-            <br/>
+        </section>
+
+        <section>
             <p>When functions, not objects or procedures, are used as the fundamental building blocks of a program.<a href="http://c2.com/cgi/wiki?FunctionalProgramming">*</a></p>
         </section>
 
@@ -77,16 +79,15 @@
         </section>
 
         <section>
-            <pre><code class="javascript">const wait = (callback) => setTimeout(callback, 1000);
-
-const add = function(a, b) { return a + b; };
+            <pre><code class="javascript">const add = function(a, b) { return a + b; };
 
 // currying (a.k.a. partial application)
-const add3 = function(a) { return add(3, a); };
-const add3 = add.bind(null, 3);
-const add3 = curry(add)(3);
+const add3a = function(a) { return add(3, a); };
+const add3b = add.bind(null, 3);
+const cAdd = curry(add);
+const add3c = cAdd(3);
 
-// composable
+// composability
 const incomplete = filter(where({complete: false}));
 const groupByUser = partition(prop('username'));
 const activeByUser = compose(groupByUser, incomplete);
@@ -133,12 +134,22 @@ const jane = john.set('name', 'Jane Doe');</code></pre>
         </section>
 
         <section>
-            <pre><code class="javascript">function updateBalance(amount) {
-  customer.balance = customer.balance + amount;
-  return customer;
+            <pre><code class="javascript">// impure
+function updateBalance(amount) {
+  this.balance = this.balance + amount;
+  return this.balance;
 };
 
+// pure
 function updateBalance(amount, customer) {
+  return customer.set('balance', customer.balance);
+};</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="javascript">// Is this pure or impure?
+function updateBalance(amount, customer) {
+  console.log('Update balance with ' + amount);
   return customer.set('balance', customer.balance);
 };</code></pre>
         </section>
@@ -230,18 +241,18 @@ const res = stocks$
                 <thead>
                     <tr>
                         <td style="border: 1px solid black"></td>
-                        <td style="border: 1px solid black;font-weight: bold;">Single</td>
-                        <td style="border: 1px solid black;font-weight: bold;">Multiple</td>
+                        <td style="border: 1px solid black;font-weight: bold;">Single values</td>
+                        <td style="border: 1px solid black;font-weight: bold;">Multiple values</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="border: 1px solid black">Pull/Synchronous</td>
+                        <td style="border: 1px solid black">Pull/Synch/Interactive</td>
                         <td style="border: 1px solid black">Object</td>
                         <td style="border: 1px solid black">Iterables (Array, Map, etc)</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid black">Push/Async</td>
+                        <td style="border: 1px solid black">Push/Async/Reactive</td>
                         <td style="border: 1px solid black">Promise</td>
                         <td style="border: 1px solid black">Observable</td>
                     </tr>
@@ -286,6 +297,7 @@ Rx.Observable.fromEvent(button, 'click');</code></pre>
 
 const model$ = Rx.Observable.timer(1, 1000)
   .map(i => 'Seconds elapsed ' + i);
+
 model$.subscribe(text => console.log(text));</code></pre>
         </section>
 
@@ -317,6 +329,108 @@ model$.subscribe(text => console.log(text));</code></pre>
             <h2>Auto Complete Demo</h2>
             <br/>
             <a href="http://jsbin.com/fuqesa/edit?js,output">Link</a>
+        </section>
+
+        <section>
+            <h2>A Rich API</h2>
+            <br/>
+            <a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/libraries/main/rx.complete.md">Link</a>
+        </section>
+
+        <section>
+            <h2>A Reactive Web App</h2>
+            <br/>
+            <ul>
+                <li class="fragment">Start with initial state</li>
+                <li class="fragment">Create a "state" stream from initial state</li>
+                <li class="fragment">Create event streams</li>
+                <li class="fragment">State stream reacts to event streams and creates new state</li>
+                <li class="fragment">View observes state stream and updates itself</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Simple Reactive Web App Demo</h3>
+            <!--
+// use jQuery + Rx.js
+Clicked <span id="count">0</span> times
+<button id="inc">+</button>
+<button id="dec">-</button>
+
+const actions$ = Rx.Observable.merge(
+  Rx.Observable.fromEvent($('#inc'), 'click').map(e => 1),
+  Rx.Observable.fromEvent($('#dec'), 'click').map(e => -1));
+
+const model$ = actions$.startWith(0).scan((x, y) => x + y);
+
+model$.subscribe(i => $('#count').html(i));
+            -->
+        </section>
+
+        <section>
+            <h2>Redux</h2>
+            <br/>
+            <p>A functional implementation of Flow</p>
+        </section>
+
+        <section>
+            <h3>Single source of truth</h3>
+            <br/>
+            <p>The state of your whole application is stored in an object tree within a single store.</p>
+        </section>
+
+        <section>
+            <h3>State is read-only</h3>
+            <br/>
+            <p>The only way to mutate the state is to emit an action, an object describing what happened.</p>
+        </section>
+
+        <section>
+            <h3>Changes are made with pure functions</h3>
+            <br/>
+            <p>To specify how the state tree is transformed by actions, you write pure reducers.</p>
+        </section>
+
+        <section>
+            <h2>Redux Demo</h2>
+            <!--
+<script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
+Clicked <span id="count">0</span> times
+<button id="inc">+</button>
+<button id="dec">-</button>
+
+function counter(state, action) {
+  if (typeof state === 'undefined') return 0;
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    default:
+      return state;
+  }
+}
+
+const store = Redux.createStore(counter);
+const el = document.getElementById('count');
+
+const render = function() {
+  el.innerHTML = store.getState().toString();
+};
+render();
+
+store.subscribe(render);
+
+document.getElementById('inc').addEventListener('click', function() {
+  store.dispatch({type: 'INCREMENT'});
+});                                 document.getElementById('dec').addEventListener('click', function() {
+  store.dispatch({type: 'DECREMENT'});
+});
+            -->
+        </section>
+
+        <section>
+            <h3>Why this matters in Angular 2</h3>
         </section>
 
         <section>
