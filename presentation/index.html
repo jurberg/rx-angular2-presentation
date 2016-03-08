@@ -158,12 +158,16 @@ function updateBalance(amount, customer) {
             <pre><code class="java">public class Customer {
   private final String name;
   private final BigDecimal balance;
+
   public Customer(String name, BigDecimal balance) {
     this.name = name;
     this.balance = balance;
   }
+
   public String getName() { return name; }
+
   public BigDecimal getBalance() { return balance; }
+
   public Customer updateBalance(BigDecimal amount) {
     return new Customer(name, balance.add(amount));
   }
@@ -323,6 +327,13 @@ model$.subscribe(text => console.log(text));</code></pre>
 
         <section>
             <h2>Hot/Cold Demo</h2>
+            <!--
+// use Rx.js
+const obs$ = Rx.Observable.timer(1, 1000); // .share();
+
+obs$.subscribe(i => console.log('1 ==> ' + i));
+setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
+            -->
         </section>
 
         <section>
@@ -342,7 +353,7 @@ model$.subscribe(text => console.log(text));</code></pre>
             <br/>
             <ul>
                 <li class="fragment">Start with initial state</li>
-                <li class="fragment">Create a "state" stream from initial state</li>
+                <li class="fragment">Create a "state" stream that starts with the initial state</li>
                 <li class="fragment">Create event streams</li>
                 <li class="fragment">State stream reacts to event streams and creates new state</li>
                 <li class="fragment">View observes state stream and updates itself</li>
@@ -394,12 +405,13 @@ model$.subscribe(i => $('#count').html(i));
         <section>
             <h2>Redux Demo</h2>
             <!--
+// require jquery
 <script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
 Clicked <span id="count">0</span> times
 <button id="inc">+</button>
 <button id="dec">-</button>
 
-function counter(state, action) {
+const store = Redux.createStore((state, action) => {
   if (typeof state === 'undefined') return 0;
   switch (action.type) {
     case 'INCREMENT':
@@ -409,28 +421,43 @@ function counter(state, action) {
     default:
       return state;
   }
-}
-
-const store = Redux.createStore(counter);
-const el = document.getElementById('count');
-
-const render = function() {
-  el.innerHTML = store.getState().toString();
-};
-render();
-
-store.subscribe(render);
-
-document.getElementById('inc').addEventListener('click', function() {
-  store.dispatch({type: 'INCREMENT'});
-});                                 document.getElementById('dec').addEventListener('click', function() {
-  store.dispatch({type: 'DECREMENT'});
 });
+
+$('#inc').click(() => store.dispatch({type: 'INCREMENT'}));
+$('#dec').click(() => store.dispatch({type: 'DECREMENT'}));
+
+store.subscribe(() => $('#count').html(store.getState()));
             -->
         </section>
 
         <section>
             <h3>Why this matters in Angular 2</h3>
+        </section>
+
+        <section>
+            <p>An Angular 2 App is a tree of components</p>
+            <img src="img/components.png"/>
+        </section>
+
+        <section>
+            <p>Each component has a change detector</p>
+            <img src="img/change_detection.png"/>
+        </section>
+
+        <section>
+            <p>A change causes top to bottom change detection</p>
+            <img src="img/tree1.png">
+        </section>
+
+        <section>
+            <p>Immutable objects allow Angular to skip unchanged components</p>
+            <img src="img/tree2.png">
+        </section>
+
+        <section>
+            <h3>Minesweeper</h3>
+            <p>TODO: Add links to before and after and show code</p>
+            <a href="http://www.jvandemo.com/how-i-optimized-minesweeper-using-angular-2-and-immutable-js-to-make-it-insanely-fast/">Article</a>
         </section>
 
         <section>
