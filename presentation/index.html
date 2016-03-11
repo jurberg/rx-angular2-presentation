@@ -119,6 +119,7 @@ const jane = Object.freeze(Object.assign({}, cust, {
         </section>
 
         <section>
+            <!-- TODO: mori instead? https://cdnjs.cloudflare.com/ajax/libs/mori/0.3.2/mori.js -->
             <pre><code class="javascript">const john = Immutable.Map({
   name: 'John Doe',
   balance: 100
@@ -279,8 +280,8 @@ const res = stocks$
             <h3>Observable Creation</h3>
             <br/>
             <pre><code class="javascript">Rx.Observable.create(observer => {
-  observer.onNext(42);
-  observer.onCompleted();
+  observer.next(42);
+  observer.complete();
   return () => console.log('disposed')
 });
 
@@ -339,13 +340,15 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
         <section>
             <h2>Auto Complete Demo</h2>
             <br/>
-            <a href="http://jsbin.com/fuqesa/edit?js,output">Link</a>
+            <a href="http://jsbin.com/tokevocigo/edit?js,output">Link</a>
         </section>
 
         <section>
             <h2>A Rich API</h2>
             <br/>
             <a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/libraries/main/rx.complete.md">Link</a>
+            <br/><br/>
+            <a href="http://rxmarbles.com/">RxMarbles</a>
         </section>
 
         <section>
@@ -362,6 +365,8 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
 
         <section>
             <h3>Simple Reactive Web App Demo</h3>
+            <br/>
+            <a href="http://jsbin.com/sujamenocu/edit?html,js,output">Demo</a>
             <!--
 // use jQuery + Rx.js
 Clicked <span id="count">0</span> times
@@ -375,58 +380,6 @@ const actions$ = Rx.Observable.merge(
 const model$ = actions$.startWith(0).scan((x, y) => x + y);
 
 model$.subscribe(i => $('#count').html(i));
-            -->
-        </section>
-
-        <section>
-            <h2>Redux</h2>
-            <br/>
-            <p>A functional implementation of Flow</p>
-        </section>
-
-        <section>
-            <h3>Single source of truth</h3>
-            <br/>
-            <p>The state of your whole application is stored in an object tree within a single store.</p>
-        </section>
-
-        <section>
-            <h3>State is read-only</h3>
-            <br/>
-            <p>The only way to mutate the state is to emit an action, an object describing what happened.</p>
-        </section>
-
-        <section>
-            <h3>Changes are made with pure functions</h3>
-            <br/>
-            <p>To specify how the state tree is transformed by actions, you write pure reducers.</p>
-        </section>
-
-        <section>
-            <h2>Redux Demo</h2>
-            <!--
-// require jquery
-<script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
-Clicked <span id="count">0</span> times
-<button id="inc">+</button>
-<button id="dec">-</button>
-
-const store = Redux.createStore((state, action) => {
-  if (typeof state === 'undefined') return 0;
-  switch (action.type) {
-    case 'INCREMENT':
-      return state + 1;
-    case 'DECREMENT':
-      return state - 1;
-    default:
-      return state;
-  }
-});
-
-$('#inc').click(() => store.dispatch({type: 'INCREMENT'}));
-$('#dec').click(() => store.dispatch({type: 'DECREMENT'}));
-
-store.subscribe(() => $('#count').html(store.getState()));
             -->
         </section>
 
@@ -451,13 +404,131 @@ store.subscribe(() => $('#count').html(store.getState()));
 
         <section>
             <p>Immutable objects allow Angular to skip unchanged components</p>
+        </section>
+
+        <section>
+            <h3>Minesweeper Example</h3>
+            <br/>
+            <a href="https://plnkr.co/edit/QCf17jLSgLZRHqBdP6ic?p=preview">Before</a><br/>
+            <a href="https://plnkr.co/edit/Ewz3PQlOZ8xuXz4nuJPh">After</a>
+            <br/><br/><br/>
+            <p><small>Source: <a href="http://www.jvandemo.com/how-i-optimized-minesweeper-using-angular-2-and-immutable-js-to-make-it-insanely-fast/">How I Optimized Minesweeper...</a></small></p>
+        </section>
+
+        <section>
+            <h3>ChangeDetectionStrategy.OnPush</h3>
+            <br/>
+            <p>Limit the change detection to only changes that directly affect bindings in our component</p>
+        </section>
+
+        <section>
             <img src="img/tree2.png">
         </section>
 
         <section>
-            <h3>Minesweeper</h3>
-            <p>TODO: Add links to before and after and show code</p>
-            <a href="http://www.jvandemo.com/how-i-optimized-minesweeper-using-angular-2-and-immutable-js-to-make-it-insanely-fast/">Article</a>
+            <h3>Example</h3>
+            <br/>
+            <a href="http://www.syntaxsuccess.com/viewarticle/change-detection-in-angular-2.0">*syntaxsuccess.com</a>
+            <br/><br/>
+            <a href="http://www.syntaxsuccess.com/angular-2-samples/#/demo/change">Demo</a>
+        </section>
+
+        <section>
+            <h3>Reactive Angular2</h3>
+            <br/>
+            <a href="http://plnkr.co/edit/d3EvriKWZ0HkP9DQ7pIP">Demo</a>
+        </section>
+
+        <section>
+            <h3>Reactive Angular2 Todos</h3>
+            <br/>
+            <a href="http://plnkr.co/edit/rDq2LUMz0iNdlv54CfUj">Demo</a>
+            <br/><br/>
+            <small><a href="http://victorsavkin.com/post/137821436516/managing-state-in-angular-2-applications">*Source: Victor Savkin</a></small>
+        </section>
+
+        <section>
+            <h2>Redux</h2>
+            <br/>
+            <p>A functional implementation of Flux</p>
+        </section>
+
+        <section>
+            <p>Flux</p><br/>
+            <img src="img/flux.png">
+        </section>
+
+        <section>
+            <img src="img/redux.jpg">
+        </section>
+
+        <section>
+            <h3>Single source of truth</h3>
+            <br/>
+            <p>The state of your whole application is stored in an object tree within a single store.</p>
+        </section>
+
+        <section>
+            <h3>State is read-only</h3>
+            <br/>
+            <p>The only way to mutate the state is to emit an action, an object describing what happened.</p>
+        </section>
+
+        <section>
+            <h3>Changes are made with pure functions</h3>
+            <br/>
+            <p>To specify how the state tree is transformed by actions, you write pure reducers.</p>
+        </section>
+
+        <section>
+            <h2>Redux Demo</h2>
+            <br/><br/>
+            <a href="http://jsbin.com/walezozexi/edit?html,js,output">Link</a>
+            <!--
+// require jquery
+<script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
+Clicked <span id="count">0</span> times
+<button id="inc">+</button>
+<button id="dec">-</button>
+
+const store = Redux.createStore((state = 0, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    default:
+      return state;
+  }
+});
+
+$('#inc').click(() => store.dispatch({type: 'INCREMENT'}));
+$('#dec').click(() => store.dispatch({type: 'DECREMENT'}));
+
+store.subscribe(() => $('#count').html(store.getState()));
+            -->
+        </section>
+
+        <section>
+            <h3>@ngrx/store</h3>
+            <br/>
+            <p>Implements the Redux framework using Observables</p>
+        </section>
+
+        <section>
+            <h3>@ngrx/store Demo</h3>
+            <br/><br/>
+            <a href="">Link</a>
+        </section>
+
+        <section>
+            <h3>Summary</h3>
+            <br/>
+            <ul>
+                <li class="fragment">Your application state should be an immutable state tree</li>
+                <li class="fragment">Your application logic should be functional</li>
+                <li class="fragment">Your code to handle changes should be Reactive</li>
+            </ul>
         </section>
 
         <section>
@@ -466,8 +537,8 @@ store.subscribe(() => $('#count').html(store.getState()));
 
         <section>
             <h3>Thanks</h3>
-            <br><br>
-            <p><a href="todo">TODO!</a></p>
+            <br/>
+            <p><a href="https://rawgit.com/jurberg/rx-angular2-presentation/master/presentation/index.html#/">https://rawgit.com/jurberg/rx-angular2-presentation/master/presentation/index.html</a></p>
         </section>
 
     </div>
