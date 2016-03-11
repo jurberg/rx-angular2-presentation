@@ -328,6 +328,8 @@ model$.subscribe(text => console.log(text));</code></pre>
 
         <section>
             <h2>Hot/Cold Demo</h2>
+            <br/>
+            <a href="http://jsbin.com">Link</a>
             <!--
 // use Rx.js
 const obs$ = Rx.Observable.timer(1, 1000); // .share();
@@ -355,10 +357,10 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
             <h2>A Reactive Web App</h2>
             <br/>
             <ul>
-                <li class="fragment">Start with initial state</li>
+                <li class="fragment">Start with initial app state</li>
                 <li class="fragment">Create a "state" stream that starts with the initial state</li>
-                <li class="fragment">Create event streams</li>
-                <li class="fragment">State stream reacts to event streams and creates new state</li>
+                <li class="fragment">Create event (action) streams</li>
+                <li class="fragment">State stream reacts to events and creates new app state</li>
                 <li class="fragment">View observes state stream and updates itself</li>
             </ul>
         </section>
@@ -518,7 +520,9 @@ store.subscribe(() => $('#count').html(store.getState()));
         <section>
             <h3>@ngrx/store Demo</h3>
             <br/><br/>
-            <a href="">Link</a>
+            <a href="http://plnkr.co/edit/ZqbgRDA9kztDy3R9lq9T">Link</a>
+            <br/><br/>
+            <a href="https://github.com/ngrx/store/blob/master/src/store.ts">Source</a>
         </section>
 
         <section>
