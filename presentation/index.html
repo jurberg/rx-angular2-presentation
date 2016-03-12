@@ -115,7 +115,9 @@ cust.name = 'Jane Doe'; // TypeError
 
 const jane = Object.freeze(Object.assign({}, cust, {
   name: 'Jane Doe'
-}));</code></pre>
+}));
+
+const jane = Object.freeze({ ...cust, name: 'Jane' });</code></pre>
         </section>
 
         <section>
@@ -447,6 +449,10 @@ model$.subscribe(i => $('#count').html(i));
             <a href="http://plnkr.co/edit/rDq2LUMz0iNdlv54CfUj">Demo</a>
             <br/><br/>
             <small><a href="http://victorsavkin.com/post/137821436516/managing-state-in-angular-2-applications">*Source: Victor Savkin</a></small>
+        </section>
+
+        <section>
+            <img src="img/todo-marbles.png">
         </section>
 
         <section>
