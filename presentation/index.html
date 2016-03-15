@@ -145,7 +145,8 @@ function updateBalance(amount) {
 
 // pure
 function updateBalance(amount, customer) {
-  return customer.set('balance', customer.balance);
+  return customer.set('balance',
+                customer.balance + amount);
 };</code></pre>
         </section>
 
@@ -153,7 +154,8 @@ function updateBalance(amount, customer) {
             <pre><code class="javascript">// Is this pure or impure?
 function updateBalance(amount, customer) {
   console.log('Update balance with ' + amount);
-  return customer.set('balance', customer.balance);
+  return customer.set('balance',
+                customer.balance + amount);
 };</code></pre>
         </section>
 
