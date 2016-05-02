@@ -131,12 +131,6 @@ const jane = john.set('name', 'Jane Doe');</code></pre>
         </section>
 
         <section>
-            <pre><code class="clojure">(def cust {:name "John Doe" :balance 100})
-
-(def jane (assoc cust :name "Jane Doe"))</code></pre>
-        </section>
-
-        <section>
             <pre><code class="javascript">// impure
 function updateBalance(amount) {
   this.balance = this.balance + amount;
@@ -363,7 +357,7 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
             <ul>
                 <li class="fragment">Start with initial app state</li>
                 <li class="fragment">Create a "state" stream that starts with the initial state</li>
-                <li class="fragment">Create event (action) streams</li>
+                <li class="fragment">Create an event stream</li>
                 <li class="fragment">State stream reacts to events and creates new app state</li>
                 <li class="fragment">View observes state stream and updates itself</li>
             </ul>
