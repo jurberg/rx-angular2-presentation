@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Functional Reactive Angular2</title>
+    <title>Functional Reactive Angular</title>
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -43,7 +43,7 @@
                 <br/>
                 <br/>
                 <br/>
-                <h2>Functional<br/>Reactive<br/>Angular 2</h2>
+                <h2>Functional<br/>Reactive<br/>Angular</h2>
                 <p>
                     <br/><br/>
                     <small>Created by John Urberg</small><br>
@@ -201,7 +201,7 @@ function updateBalance(amount, customer) {
         <section>
             <h3>Performance</h3>
             <br/>
-            <p>Angular 2 is faster with immutable objects<br/>(more on that later)</p>
+            <p>Angular is faster with immutable objects<br/>(more on that later)</p>
         </section>
 
         <section>
@@ -250,12 +250,12 @@ const res = stocks$
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="border: 1px solid black">Pull/Synch/Interactive</td>
+                        <td style="border: 1px solid black">Pull</br>Synchronous</br>Interactive</td>
                         <td style="border: 1px solid black">Object</td>
                         <td style="border: 1px solid black">Iterables (Array, Map, etc)</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid black">Push/Async/Reactive</td>
+                        <td style="border: 1px solid black">Push</br>Asynchronous</br>Reactive</td>
                         <td style="border: 1px solid black">Promise</td>
                         <td style="border: 1px solid black">Observable</td>
                     </tr>
@@ -330,6 +330,8 @@ model$.subscribe(text => console.log(text));</code></pre>
             <a href="http://jsbin.com">Link</a>
             <!--
 // use Rx.js
+<script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
+
 const obs$ = Rx.Observable.timer(1, 1000); // .share();
 
 obs$.subscribe(i => console.log('1 ==> ' + i));
@@ -341,6 +343,47 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
             <h2>Auto Complete Demo</h2>
             <br/>
             <a href="http://jsbin.com/tokevocigo/edit?js,output">Link</a>
+            <!--
+<script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
+<input id="textInput"><br/>
+<div id="results"></div>
+
+function searchWikipedia(term) {
+  return $.ajax({
+    url: 'http://en.wikipedia.org/w/api.php',
+    dataType: 'jsonp',
+    data: {
+      action: 'opensearch',
+      format: 'json',
+      search: term
+    }
+  }).promise();
+}
+
+$(function() {
+  var $input = $('#textInput'),
+      $results = $('#results');
+
+  var keyup$ = Rx.Observable.fromEvent($input, 'keyup')
+    .map(function(e) { return e.target.value; })
+    .filter(function(text) { return text.length > 2; })
+    .debounceTime(750)
+    .distinctUntilChanged();
+
+  var searcher$ = keyup$.switchMap(searchWikipedia);
+
+  searcher$.subscribe(function(data) {
+    $results
+      .empty()
+      .append($.map(data[1], function(v) { return $('<li>').text(v); }));
+  }, function(error) {
+    $results
+      .empty()
+      .append($('<li>'))
+      .text('Error:' + error);
+  });
+});
+            -->
         </section>
 
         <section>
@@ -369,6 +412,9 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
             <a href="http://jsbin.com/sujamenocu/edit?html,js,output">Demo</a>
             <!--
 // use jQuery + Rx.js
+<script src="https://npmcdn.com/@reactivex/rxjs@5.0.0-alpha.8/dist/global/Rx.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+
 Clicked <span id="count">0</span> times
 <button id="inc">+</button>
 <button id="dec">-</button>
@@ -384,11 +430,11 @@ model$.subscribe(i => $('#count').html(i));
         </section>
 
         <section>
-            <h3>Why this matters in Angular 2</h3>
+            <h3>Why this matters in Angular</h3>
         </section>
 
         <section>
-            <p>An Angular 2 App is a tree of components</p>
+            <p>An Angular App is a tree of components</p>
             <img src="img/components.png"/>
         </section>
 
@@ -434,13 +480,13 @@ model$.subscribe(i => $('#count').html(i));
         </section>
 
         <section>
-            <h3>Reactive Angular2</h3>
+            <h3>Reactive Angular</h3>
             <br/>
             <a href="http://plnkr.co/edit/d3EvriKWZ0HkP9DQ7pIP">Demo</a>
         </section>
 
         <section>
-            <h3>Reactive Angular2 Todos</h3>
+            <h3>Reactive Immutable Angular Todos</h3>
             <br/>
             <a href="http://plnkr.co/edit/rDq2LUMz0iNdlv54CfUj">Demo</a>
             <br/><br/>
