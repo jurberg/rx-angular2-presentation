@@ -64,30 +64,34 @@
         <section>
             <h3>First Class Functions</h3>
             <br/>
+            <p>The ability to use functions as data values:</p>
+            <br/>
             <ul>
-                <li>Can be stored in variables</li>
-                <li>Can be passed as arguments to functions</li>
-                <li>Can be created within functions</li>
-                <li>Can be returned from functions</li>
+                <li>Stored in variables</li>
+                <li>Passed as arguments to functions</li>
+                <li>Created within functions</li>
+                <li>Returned from functions</li>
             </ul>
         </section>
 
         <section>
-            <h3>High Order Functions</h3>
-            <br/>
-            <p>A function that takes a function as an argument or returns a function as a result</p>
+            <pre><code class="javascript">// store in a variable
+const add = (a, b) => a + b;
+
+// pass as an argument
+map((a) => a + 1, [1, 2, 3]);
+
+// return a function
+const add3 = b => add(3, b);</code></pre>
         </section>
 
         <section>
-            <pre><code class="javascript">const add = function(a, b) { return a + b; };
+            <pre><code class="javascript">// curry a function
+const add = curry((a, b) => a + b);
 
-// currying (a.k.a. partial application)
-const add3a = function(a) { return add(3, a); };
-const add3b = add.bind(null, 3);
-const cAdd = curry(add);
-const add3c = cAdd(3);
+const add3 = add(3);
 
-// composability
+// compose functions
 const incomplete = filter(where({complete: false}));
 const groupByUser = partition(prop('username'));
 const activeByUser = compose(groupByUser, incomplete);
@@ -102,6 +106,10 @@ const results = activeByUser(tasks);</code></pre>
                 <li>Immutable Data</li>
                 <li>No Side Effects</li>
             </ul>
+        </section>
+
+        <section>
+            <h3>Immutability</h3>
         </section>
 
         <section>
@@ -131,6 +139,10 @@ const jane = john.set('name', 'Jane Doe');</code></pre>
         </section>
 
         <section>
+            <h3>Purity</h3>
+        </section>
+
+        <section>
             <pre><code class="javascript">// impure
 function updateBalance(amount) {
   this.balance = this.balance + amount;
@@ -154,32 +166,19 @@ function updateBalance(amount, customer) {
         </section>
 
         <section>
-            <pre><code class="java">public class Customer {
-  private final String name;
-  private final BigDecimal balance;
-
-  public Customer(String name, BigDecimal balance) {
-    this.name = name;
-    this.balance = balance;
-  }
-
-  public String getName() { return name; }
-
-  public BigDecimal getBalance() { return balance; }
-
-  public Customer updateBalance(BigDecimal amount) {
-    return new Customer(name, balance.add(amount));
-  }
-}</code></pre>
-        </section>
-
-        <section>
             <h3>Other Functional Stuff</h3>
             <br/>
             <ul>
                 <li>Monads and Functors</li>
+                <!-- Functor == something that can be mapped over -->
+                <!-- Monad = Endofunctor (functor that maps from a category back to the same category) -->
                 <li>Referential Transparency</li>
+                <!-- An expression is said to be referentially transparent if it
+                can be replaced with its corresponding value without changing the
+                program's behavior -->
                 <li>Lazy Evaluation</li>
+                <!--  delays the evaluation of an expression until its value is needed
+                (non-strict evaluation) and which also avoids repeated evaluations (sharing) -->
             </ul>
         </section>
 
@@ -250,12 +249,12 @@ const res = stocks$
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="border: 1px solid black">Pull</br>Synchronous</br>Interactive</td>
+                        <td style="border: 1px solid black">Pull</td>
                         <td style="border: 1px solid black">Object</td>
                         <td style="border: 1px solid black">Iterables (Array, Map, etc)</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid black">Push</br>Asynchronous</br>Reactive</td>
+                        <td style="border: 1px solid black">Push</td>
                         <td style="border: 1px solid black">Promise</td>
                         <td style="border: 1px solid black">Observable</td>
                     </tr>
@@ -328,6 +327,15 @@ model$.subscribe(text => console.log(text));</code></pre>
             <h2>Hot/Cold Demo</h2>
             <br/>
             <a href="http://jsbin.com">Link</a>
+        </section>
+
+        <section>
+            <pre><code class="javascript">const obs$ = Rx.Observable.timer(1, 1000);
+//const obs$ = Rx.Observable.timer(1, 1000).share();
+obs$.subscribe(i => console.log('1 ==> ' + i));
+setTimeout(() =>
+  obs$.subscribe(i => console.log('2 =====> ' + i)),
+  3000);</code></pre>
             <!--
 // use Rx.js
 <script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
@@ -343,6 +351,17 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
             <h2>Auto Complete Demo</h2>
             <br/>
             <a href="http://jsbin.com/tokevocigo/edit?js,output">Link</a>
+        </section>
+
+        <section>
+            <pre><code class="javascript">const k$ = Rx.Observable.fromEvent($input, 'keyup')
+    .map(e => e.target.value)
+    .filter(text => text.length > 2)
+    .debounceTime(750)
+    .distinctUntilChanged();
+
+const searcher$ = k$.switchMap(searchWikipedia);
+searcher$.subscribe(data => console.log(data));</code></pre>
             <!--
 <script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
 <input id="textInput"><br/>
@@ -389,16 +408,27 @@ $(function() {
         <section>
             <h2>A Rich API</h2>
             <br/>
+            <p>100s of methods</p>
+            <br/>
             <a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/libraries/main/rx.complete.md">Link</a>
-            <br/><br/>
-            <a href="http://rxmarbles.com/">RxMarbles</a>
         </section>
 
         <section>
-            <h2>A Reactive Web App</h2>
+            <h3>Rx Marbles</h3>
+            <p>Visualize Rx API Methods</p>
             <br/>
+            <a href="http://rxmarbles.com/">RxMarbles</a>
+            <br/>
+            <img src="img/marbles.png"/>
+        </section>
+
+        <section>
+            <h3>A Reactive Web App</h3>
+        </section>
+
+        <section>
             <ul>
-                <li class="fragment">Start with initial app state</li>
+                <li>Start with initial app state</li>
                 <li class="fragment">Create a "state" stream that starts with the initial state</li>
                 <li class="fragment">Create an event stream</li>
                 <li class="fragment">State stream reacts to events and creates new app state</li>
@@ -427,6 +457,20 @@ const model$ = actions$.startWith(0).scan((x, y) => x + y);
 
 model$.subscribe(i => $('#count').html(i));
             -->
+        </section>
+
+        <section>
+            <pre><code class="javascript">// event stream
+const actions$ = Observable.merge(
+ Observable.fromEvent($('#inc'), 'click').map(_ => 1),
+ Observable.fromEvent($('#dec'), 'click').map(_ => -1)
+);
+
+// state stream starts with 0 and reacts to events
+const model$ = actions$.startWith(0).scan((x, y) => x + y);
+
+// view observes and updates itself
+model$.subscribe(i => $('#count').html(i));</code></pre>
         </section>
 
         <section>
