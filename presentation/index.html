@@ -498,6 +498,7 @@ state$.subscribe(i => $('#count').html(i));</code></pre>
             <p>Immutable objects allow Angular to skip unchanged components</p>
         </section>
 
+<!--
         <section>
             <h3>Minesweeper Example</h3>
             <br/>
@@ -506,6 +507,7 @@ state$.subscribe(i => $('#count').html(i));</code></pre>
             <br/><br/><br/>
             <p><small>Source: <a href="http://www.jvandemo.com/how-i-optimized-minesweeper-using-angular-2-and-immutable-js-to-make-it-insanely-fast/">How I Optimized Minesweeper...</a></small></p>
         </section>
+-->
 
         <section>
             <h3>ChangeDetectionStrategy.OnPush</h3>
@@ -544,10 +546,10 @@ class MyComponent {
 
         <section>
             <pre><code class="typescript">@Component({
-  selector: 'main-app',
-  template: `Clicked {{state$|async}} times
-      <button (click)="increment()">+</button>
-      <button (click)="decrement()">-</button>`
+  template: `
+    Clicked {{ state$ | async }} times
+    <button (click)="increment()">+</button>
+    <button (click)="decrement()">-</button>`
 })
 class MainComponent {
   inc$ = new Subject()
@@ -663,7 +665,6 @@ class TodoList {
         </section>
 
         <section>
-            <p>TODO: Fix the update_todo part of this graph...</p>
             <img src="img/todo-marbles.png">
         </section>
 
@@ -733,6 +734,10 @@ store.subscribe(() => $('#count').html(store.getState()));
             <h3>@ngrx/store</h3>
             <br/>
             <p>Implements the Redux framework using Observables</p>
+        </section>
+
+        <section>
+            <h3>Include some code snippets here...</h3>
         </section>
 
         <section>
