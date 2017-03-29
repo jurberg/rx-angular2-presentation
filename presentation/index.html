@@ -82,7 +82,8 @@ const add = (a, b) => a + b;
 map((a) => a + 1, [1, 2, 3]);
 
 // return a function
-const add3 = b => add(3, b);</code></pre>
+const addOne = (a) => (b) => add(a, b);
+</code></pre>
         </section>
 
         <section>
@@ -169,7 +170,7 @@ function updateBalance(amount, customer) {
             <h3>Other Functional Stuff</h3>
             <br/>
             <ul>
-                <li>Monads and Functors</li>
+                <li>Functors and Monads</li>
                 <!-- Functor == something that can be mapped over -->
                 <!-- Monad = Endofunctor (functor that maps from a category back to the same category) -->
                 <li>Referential Transparency</li>
@@ -193,7 +194,6 @@ function updateBalance(amount, customer) {
                 <li>Parallelism</li>
                 <li>Ability to reason about your program</li>
                 <li>Composability</li>
-                <li>Better Modularity</li>
             </ul>
         </section>
 
@@ -461,16 +461,18 @@ model$.subscribe(i => $('#count').html(i));
 
         <section>
             <pre><code class="javascript">// event stream
-const actions$ = Observable.merge(
+const event$ = Observable.merge(
  Observable.fromEvent($('#inc'), 'click').map(_ => 1),
  Observable.fromEvent($('#dec'), 'click').map(_ => -1)
 );
 
 // state stream starts with 0 and reacts to events
-const model$ = actions$.startWith(0).scan((x, y) => x + y);
+const state$ = event$
+    .startWith(0)
+    .scan((x, y) => x + y);
 
 // view observes and updates itself
-model$.subscribe(i => $('#count').html(i));</code></pre>
+state$.subscribe(i => $('#count').html(i));</code></pre>
         </section>
 
         <section>
@@ -524,21 +526,34 @@ model$.subscribe(i => $('#count').html(i));</code></pre>
         </section>
 
         <section>
+            <h3>Async Pipe</h3>
+            <br/>
+            <p>Unwraps a value from an asynchronous primitive</p>
+            <br/>
+            <pre><code class="typescript">@Component({
+  template: `<div>{{ model$ | async }}</div>`
+})
+class MyComponent {
+  model$ = Rx.Observable.timer(1, 1000)
+}</code></pre>
+        </section>
+
+        <section>
             <h3>Reactive Angular Counter</h3>
         </section>
 
         <section>
-            <pre><code class="javascript">@Component({
+            <pre><code class="typescript">@Component({
   selector: 'main-app',
-  template: `Clicked {{model$|async}} times
+  template: `Clicked {{state$|async}} times
       <button (click)="increment()">+</button>
       <button (click)="decrement()">-</button>`
 })
 class MainComponent {
   inc$ = new Subject()
   dec$ = new Subject()
-  actions$ = Observable.merge(this.inc$, this.dec$)
-  model$ = this.actions$
+  event$ = Observable.merge(this.inc$, this.dec$)
+  state$ = this.event$
     .startWith(0)
     .scan((x, y) => x + y)
 
@@ -546,6 +561,15 @@ class MainComponent {
   decrement() { this.dec$.next(-1); }
 }</code></pre>
         </section>
+
+<!--
+@ViewChild('button') button;
+clicks$:Observable<any>;
+
+ngOnInit() {
+  this.clicks$ = Observable.fromEvent(this.button.nativeElement, 'click');
+}
+-->
 
         <section>
             <a href="http://plnkr.co/edit/d3EvriKWZ0HkP9DQ7pIP">Demo</a>
@@ -556,26 +580,32 @@ class MainComponent {
         </section>
 
         <section>
-            <p>Start with initial state</p>
-            <pre><code class="javascript">interface Todo {
+            <p>Our Model</p>
+            <pre><code class="typescript">interface Todo {
   id: number;
   text: string;
   completed: boolean;
 }
+
 interface AppState {
   todos: Todo[];
   visibilityFilter: string;
-}
+}</code></pre>
+        </section>
 
-provide(initState, {useValue: {
-  todos: [],
-  visibilityFilter: 'SHOW_ALL'
-}})</code></pre>
+        <section>
+            <p>Start with initial state</p>
+            <pre><code class="typescript">provide(initState, {
+  useValue: {
+    todos: [],
+    visibilityFilter: 'SHOW_ALL'
+  }
+})</code></pre>
         </section>
 
         <section>
             <p>Create a "state" stream that starts with the initial state</p>
-            <pre><code class="javascript">provide(state, {
+            <pre><code class="typescript">provide(state, {
   useFactory: stateFn,
   deps: [new Inject(initState), new Inject(dispatcher)]
 })</code></pre>
@@ -583,14 +613,14 @@ provide(initState, {useValue: {
 
         <section>
             <p>Create an event stream</p>
-            <pre><code class="javascript">provide(dispatcher, {
-  useValue: new Subject&lt;Action&gt;(null)
+            <pre><code class="typescript">provide(dispatcher, {
+  useValue: new Subject&lt;Action&gt;()
 })</code></pre>
         </section>
 
         <section>
             <p>State stream reacts to events and creates new app state</p>
-            <pre><code class="javascript">function stateFn(initState, actions) {
+            <pre><code class="typescript">function stateFn(initState, actions) {
   return actions.scan((state, action) => {
     if (action instanceof AddTodoAction) {
       const newTodo = {
@@ -608,7 +638,7 @@ provide(initState, {useValue: {
 
         <section>
             <p>View observes state stream and updates itself</p>
-            <pre><code class="javascript">@Component({
+            <pre><code class="typescript">@Component({
   selector: 'todo-list',
   template: `&lt;todo *ngFor="#t of filtered|async"/&gt;`
 })
@@ -628,11 +658,12 @@ class TodoList {
 
         <section>
             <a href="http://plnkr.co/edit/rDq2LUMz0iNdlv54CfUj">Live Demo</a>
-            <br/>
+            <br/><br/>
             <small><a href="http://victorsavkin.com/post/137821436516/managing-state-in-angular-2-applications">*Source: Victor Savkin</a></small>
         </section>
 
         <section>
+            <p>TODO: Fix the update_todo part of this graph...</p>
             <img src="img/todo-marbles.png">
         </section>
 
