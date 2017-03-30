@@ -423,7 +423,7 @@ $(function() {
         </section>
 
         <section>
-            <h3>A Reactive Web App</h3>
+            <h3>A Reactive Application</h3>
         </section>
 
         <section>
@@ -437,7 +437,7 @@ $(function() {
         </section>
 
         <section>
-            <h3>Simple Reactive Web App Demo</h3>
+            <h3>Simple Reactive     App Demo</h3>
             <br/>
             <a href="http://jsbin.com/sujamenocu/edit?html,js,output">Demo</a>
             <!--
@@ -741,6 +741,54 @@ store.subscribe(() => $('#count').html(store.getState()));
         </section>
 
         <section>
+            <pre><code class="typescript">const todos = (state = [], {type, payload}) => {
+ switch(type){
+  case ADD_TODO:
+   return [...state, {...payload, id:state.length + 1}];
+  case COMPLETE_TODO:
+   return state.map(todo => (todo.id !== payload.id ?
+     todo : { ...todo, completed: true }));
+  case DELETE_TODO:
+   return state.filter(todo => todo.id !== payload.id);
+  default:
+   return state;
+ }
+}</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="typescript">bootstrap(App, [
+  provide(Store, {
+    useValue: createStore(combineReducers({
+      todos,
+      visibilityFilter
+    }))
+  })
+])
+.catch(err => console.error(err));
+            </code></pre>
+        </section>
+
+        <section>
+            <pre><code class="typescript">class App {
+  constructor(private store:Store) {
+    this.todos = store.select('todos')
+      .combineLatest(
+        store.select('visibilityFilter'),
+        (todos, visibilityFilter) => {
+          return todos.filter(visibilityFilter)
+        });
+  }
+  addTodo(newTodo){
+    this.store.dispatch({
+      type: TodoActions.ADD_TODO,
+      payload: newTodo
+    });
+  }
+}</code></pre>
+        </section>
+
+        <section>
             <h3>@ngrx/store Demo</h3>
             <br/><br/>
             <a href="http://plnkr.co/edit/ZqbgRDA9kztDy3R9lq9T">Link</a>
@@ -751,10 +799,11 @@ store.subscribe(() => $('#count').html(store.getState()));
         <section>
             <h3>Summary</h3>
             <br/>
+            <p>To build an immutable reactive Angular application:</p>
             <ul>
-                <li class="fragment">Your application state should be an immutable state tree</li>
-                <li class="fragment">Your application logic should be functional</li>
-                <li class="fragment">Your code to handle changes should be Reactive</li>
+                <li class="fragment">Put your application state should be an immutable state tree</li>
+                <li class="fragment">Make your application logic functional</li>
+                <li class="fragment">Make use of Rx.JS to handle changes</li>
             </ul>
         </section>
 
