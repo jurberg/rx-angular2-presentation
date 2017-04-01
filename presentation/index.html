@@ -737,10 +737,6 @@ store.subscribe(() => $('#count').html(store.getState()));
         </section>
 
         <section>
-            <h3>Include some code snippets here...</h3>
-        </section>
-
-        <section>
             <pre><code class="typescript">const todos = (state = [], {type, payload}) => {
  switch(type){
   case ADD_TODO:
@@ -792,8 +788,19 @@ store.subscribe(() => $('#count').html(store.getState()));
             <h3>@ngrx/store Demo</h3>
             <br/><br/>
             <a href="http://plnkr.co/edit/ZqbgRDA9kztDy3R9lq9T">Link</a>
-            <br/><br/>
-            <a href="https://github.com/ngrx/store/blob/master/src/store.ts">Source</a>
+        </section>
+
+        <section>
+            <h3>Tips</h3>
+            <br/>
+            <ul>
+                <li class="fragment">Reducers are pure functions</li>
+                <li class="fragment">Breakd down state into logical groups with separate reducers</li>
+                <li class="fragment">Actions should be strings</li>
+                <li class="fragment">State should be in "JSON'able" form</li>
+                <li class="fragment">Utilize tools like Immutable</li>
+                <li class="fragment">UI components should be dumb</li>
+            </ul>
         </section>
 
         <section>
@@ -801,7 +808,7 @@ store.subscribe(() => $('#count').html(store.getState()));
             <br/>
             <p>To build an immutable reactive Angular application:</p>
             <ul>
-                <li class="fragment">Put your application state should be an immutable state tree</li>
+                <li class="fragment">Put your application state in an immutable state tree</li>
                 <li class="fragment">Make your application logic functional</li>
                 <li class="fragment">Make use of Rx.JS to handle changes</li>
             </ul>
