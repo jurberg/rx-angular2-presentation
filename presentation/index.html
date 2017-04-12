@@ -82,7 +82,7 @@ const add = (a, b) => a + b;
 map((a) => a + 1, [1, 2, 3]);
 
 // return a function
-const addOne = (a) => (b) => add(a, b);
+const createAdder = (a) => (b) => add(a, b);
 </code></pre>
         </section>
 
@@ -449,13 +449,13 @@ Clicked <span id="count">0</span> times
 <button id="inc">+</button>
 <button id="dec">-</button>
 
-const actions$ = Rx.Observable.merge(
+const event$ = Rx.Observable.merge(
   Rx.Observable.fromEvent($('#inc'), 'click').map(e => 1),
   Rx.Observable.fromEvent($('#dec'), 'click').map(e => -1));
 
-const model$ = actions$.startWith(0).scan((x, y) => x + y);
+const state$ = event$.startWith(0).scan((x, y) => x + y);
 
-model$.subscribe(i => $('#count').html(i));
+state$.subscribe(i => $('#count').html(i));
             -->
         </section>
 
@@ -615,14 +615,27 @@ interface AppState {
 
         <section>
             <p>Create an event stream</p>
-            <pre><code class="typescript">provide(dispatcher, {
+            <pre><code class="typescript">class AddTodoAction {
+  constructor(public todoId, public text){}
+}
+class ToggleTodoAction {
+  constructor(public id: number){}
+}
+class SetVisibilityFilter {
+  constructor(public filter: string){}
+}
+type Action = AddTodoAction |
+              ToggleTodoAction |
+              SetVisibilityFilter;
+
+provide(dispatcher, {
   useValue: new Subject&lt;Action&gt;()
 })</code></pre>
         </section>
 
         <section>
             <p>State stream reacts to events and creates new app state</p>
-            <pre><code class="typescript">function stateFn(initState, actions) {
+            <pre><code class="typescript">function todos(initState, actions) {
   return actions.scan((state, action) => {
     if (action instanceof AddTodoAction) {
       const newTodo = {
@@ -637,6 +650,44 @@ interface AppState {
   }, initState);
 }</code></pre>
         </section>
+
+        <section>
+            <pre><code class="typescript">function filter(initState, actions) {
+  return actions.scan((state, action) => {
+    if (action instanceof SetVisibilityFilter) {
+      return action.filter;
+    } else {
+      return state;
+    }
+  }, initState);
+}</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="typescript">function stateFn(initState, actions) {
+  const combine = s => ({
+    todos: s[0],
+    visibilityFilter: s[1]
+  });
+  const appStateObs = todos(initState.todos, actions)
+    .zip(filter(initState.visibilityFilter, actions))
+    .map(combine);
+  const res = new BehaviorSubject(initState);
+  appStateObs.subscribe(s => res.next(s));
+  return res;
+}</code></pre>
+        </section>
+        <!--
+        If a component subscribes to it, the component won’t receive any data until the observable
+        emits a new event. For this to happen a new action has to be emitted. This is not what we want.
+        What we want is for the component to receive the latest snapshot the moment it subscribes.
+
+        A behavior subject is an observable that will emit the latest value to every new subscriber.
+
+        If you are familiar with Redux, you can find the stateFn function to be similar to a Redux reducer.
+        But there is actually a big difference: the stateFn function is invoked only once, whereas a Redux
+        reducer is invoked on every action.
+        -->
 
         <section>
             <p>View observes state stream and updates itself</p>

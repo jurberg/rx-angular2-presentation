@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Angular Immutable TODO</title>
+    <title>Angular Rx TODO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 
@@ -28,18 +28,11 @@
             .then(null, console.error.bind(console));
     </script>
 
-    <style>
-     todo {
-       display: block;
-     }
-   </style>
+  </head>
 
- </head>
-
- <body>
-   <ng-demo>
-     loading...
-   </ng-demo>
- </body>
+  <!-- 3. Display the application -->
+  <body>
+    <main-app></main-app>
+  </body>
 
 </html>
