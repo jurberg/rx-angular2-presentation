@@ -148,13 +148,15 @@ const jane = john.set('name', 'Jane Doe');</code></pre>
 function updateBalance(amount) {
   this.balance = this.balance + amount;
   return this.balance;
-};
+}</code></pre>
+        </section>
 
-// pure
+        <section>
+            <pre><code class="javascript">// pure
 function updateBalance(amount, customer) {
   return customer.set('balance',
                 customer.balance + amount);
-};</code></pre>
+}</code></pre>
         </section>
 
         <section>
@@ -846,7 +848,7 @@ store.subscribe(() => $('#count').html(store.getState()));
             <br/>
             <ul>
                 <li class="fragment">Reducers are pure functions</li>
-                <li class="fragment">Breakd down state into logical groups with separate reducers</li>
+                <li class="fragment">Break down state into logical groups with separate reducers</li>
                 <li class="fragment">Actions should be strings</li>
                 <li class="fragment">State should be in "JSON'able" form</li>
                 <li class="fragment">Utilize tools like Immutable</li>
@@ -861,7 +863,7 @@ store.subscribe(() => $('#count').html(store.getState()));
             <ul>
                 <li class="fragment">Put your application state in an immutable state tree</li>
                 <li class="fragment">Make your application logic functional</li>
-                <li class="fragment">Make use of Rx.JS to handle changes</li>
+                <li class="fragment">Use a reactive framework to organize your code</li>
             </ul>
         </section>
 
@@ -873,6 +875,8 @@ store.subscribe(() => $('#count').html(store.getState()));
             <h3>Thanks</h3>
             <br/>
             <p><a href="https://rawgit.com/jurberg/rx-angular2-presentation/master/presentation/index.html#/">https://rawgit.com/jurberg/rx-angular2-presentation/master/presentation/index.html</a></p>
+            <br/>
+            <p><a href="https://github.com/jurberg/rx-angular2-presentation">https://github.com/jurberg/rx-angular2-presentation</a></p>
         </section>
 
     </div>
