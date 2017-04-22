@@ -54,6 +54,33 @@
         </section>
 
         <section>
+            <img src="img/Lifetouch_Logo_2013.png"/>
+            <br/>
+            <ul>
+                <li>100% Employee Owned headquartered in Eden Prairie</li>
+                <li>Underclass Pictures</li>
+                <li>Seniors Pictures</li>
+                <li>Yearbooks</li>
+                <li>Sports Pictures</li>
+                <li>Event Pictures</li>
+                <li>Also Church Photography, JCPenny Portraits & Preschool</li>
+            </ul>
+        </section>
+
+        <section>
+            <table>
+                <tr>
+                    <td style="padding:20px;"><img src="img/AmazonWebservices_Logo.png"/></td>
+                    <td style="padding:20px;"><img src="img/springboot.png"/></td>
+                </tr>
+                <tr>
+                    <td style="padding:20px;"><img src="img/nodejs.png"/></td>
+                    <td style="padding:20px;"><img src="img/angular2-logo.png"/></td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
             <h3>What is functional programming?</h3>
         </section>
 
@@ -64,13 +91,13 @@
         <section>
             <h3>First Class Functions</h3>
             <br/>
-            <p>The ability to use functions as data values:</p>
+            <p>The ability to use functions as data values</p>
             <br/>
             <ul>
-                <li>Stored in variables</li>
-                <li>Passed as arguments to functions</li>
-                <li>Created within functions</li>
-                <li>Returned from functions</li>
+                <li>Store in variables</li>
+                <li>Pass as arguments to functions</li>
+                <li>Create within functions</li>
+                <li>Return from functions</li>
             </ul>
         </section>
 
@@ -81,13 +108,23 @@ const add = (a, b) => a + b;
 // pass as an argument
 map((a) => a + 1, [1, 2, 3]);
 
-// return a function
+// create in a function and return from a function
 const createAdder = (a) => (b) => add(a, b);
+
 </code></pre>
         </section>
 
         <section>
-            <pre><code class="javascript">// curry a function
+            <pre><code class="javascript">const createAdder = function(a) {
+  return function(b) {
+    return add(a, b);
+  }
+}
+</code></pre>
+        </section>
+
+        <section>
+            <pre><code class="javascript">// curry a function (partial application)
 const add = curry((a, b) => a + b);
 
 const add3 = add(3);
@@ -101,16 +138,9 @@ const results = activeByUser(tasks);</code></pre>
         </section>
 
         <section>
-            <h3>Purity</h3>
-            <br/>
-            <ul>
-                <li>Immutable Data</li>
-                <li>No Side Effects</li>
-            </ul>
-        </section>
-
-        <section>
             <h3>Immutability</h3>
+            <br/>
+            <p>An immutable object is an object whose state cannot be modified after it is created.</p>
         </section>
 
         <section>
@@ -119,8 +149,8 @@ const results = activeByUser(tasks);</code></pre>
   balance: 100
 });
 
-cust = {name: 'Jane Doe', balance: 100}; // TypeError
-cust.name = 'Jane Doe'; // TypeError
+cust = {name: 'Jane Doe', balance: 100}; //TypeError
+cust.name = 'Jane Doe'; //TypeError
 
 const jane = Object.freeze(Object.assign({}, cust, {
   name: 'Jane Doe'
@@ -137,10 +167,15 @@ const jane = Object.freeze({ ...cust, name: 'Jane' });</code></pre>
 });
 
 const jane = john.set('name', 'Jane Doe');</code></pre>
+            <!--
+            Based on Phil Bagwell's paper on Ideal Hash Trees
+            -->
         </section>
 
         <section>
             <h3>Purity</h3>
+            <br/>
+            <p>No side effects.</p>
         </section>
 
         <section>
@@ -202,7 +237,7 @@ function updateBalance(amount, customer) {
         <section>
             <h3>Performance</h3>
             <br/>
-            <p>Angular is faster with immutable objects<br/>(more on that later)</p>
+            <p>Angular is faster with immutable objects<br/></br>(more on that later)</p>
         </section>
 
         <section>
@@ -239,26 +274,26 @@ const res = stocks$
         </section>
 
         <section>
-            <h3>Pull vs Push</h3>
+            <h3>Pull vs. Push</h3>
             <br/>
             <table style="border-collapse: collapse; border: 1px solid black;width: 100%">
                 <thead>
                     <tr>
                         <td style="border: 1px solid black"></td>
-                        <td style="border: 1px solid black;font-weight: bold;">Single values</td>
-                        <td style="border: 1px solid black;font-weight: bold;">Multiple values</td>
+                        <td style="border: 1px solid black;font-weight: bold;padding: 10px;">Single values</td>
+                        <td style="border: 1px solid black;font-weight: bold;padding: 10px;">Multiple values</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="border: 1px solid black">Pull</td>
-                        <td style="border: 1px solid black">Object</td>
-                        <td style="border: 1px solid black">Iterables (Array, Map, etc)</td>
+                        <td style="border: 1px solid black;padding: 10px;">Pull</td>
+                        <td style="border: 1px solid black;padding: 10px;">Object</td>
+                        <td style="border: 1px solid black;padding: 10px;">Iterables (Array, Map, etc)</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid black">Push</td>
-                        <td style="border: 1px solid black">Promise</td>
-                        <td style="border: 1px solid black">Observable</td>
+                        <td style="border: 1px solid black;padding: 10px;">Push</td>
+                        <td style="border: 1px solid black;padding: 10px;">Promise</td>
+                        <td style="border: 1px solid black;padding: 10px;">Observable</td>
                     </tr>
                 </tbody>
             </table>
@@ -271,7 +306,7 @@ const res = stocks$
                 <li>Stream of data over time</li>
                 <li>Asynchronous</li>
                 <li>Lazy</li>
-                <li>Hot vs Cold</li>
+                <li>Hot or Cold</li>
             </ul>
         </section>
 
@@ -306,7 +341,7 @@ model$.subscribe(text => console.log(text));</code></pre>
         </section>
 
         <section>
-            <h3>Hot vs Cold Observables</h3>
+            <h3>Hot vs. Cold Observables</h3>
         </section>
 
         <section>
@@ -356,14 +391,14 @@ setTimeout(() => obs$.subscribe(i => console.log('2 =====> ' + i)), 3000);
         </section>
 
         <section>
-            <pre><code class="javascript">const k$ = Rx.Observable.fromEvent($input, 'keyup')
+            <pre><code class="javascript">const keyup$ =
+  Rx.Observable.fromEvent($input, 'keyup')
     .map(e => e.target.value)
     .filter(text => text.length > 2)
     .debounceTime(750)
     .distinctUntilChanged();
 
-const searcher$ = k$.switchMap(searchWikipedia);
-searcher$.subscribe(data => console.log(data));</code></pre>
+const searcher$ = keyup$.switchMap(searchWikipedia);</code></pre>
             <!--
 <script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
 <input id="textInput"><br/>
@@ -482,7 +517,7 @@ state$.subscribe(i => $('#count').html(i));</code></pre>
         </section>
 
         <section>
-            <p>An Angular App is a tree of components</p>
+            <p>An Angular application is a tree of components</p>
             <img src="img/components.png"/>
         </section>
 
@@ -859,7 +894,7 @@ store.subscribe(() => $('#count').html(store.getState()));
         <section>
             <h3>Summary</h3>
             <br/>
-            <p>To build an immutable reactive Angular application:</p>
+            <p>To build an functional reactive Angular application:</p>
             <ul>
                 <li class="fragment">Put your application state in an immutable state tree</li>
                 <li class="fragment">Make your application logic functional</li>
